@@ -13302,18 +13302,6 @@ document.addEventListener("DOMContentLoaded", function() {
                     clearTimeout(freezeTimer);
                     console.log("freeze disabled");
                 }
-            } else if (event.code === freezeFunctionHotkey) {
-                if (!freeze) {
-                    freeze = true;
-                    sendInputBlock = true;
-                    freezeFunc();
-                    console.log("freeze enabled");
-                } else {
-                    freeze = false;
-                    sendInputBlock = false;
-                    clearTimeout(freezeTimer);
-                    console.log("freeze disabled");
-                }
             } else if (event.code === FREEZE_KEY) {
                 if (!freeze1) {
                   freeze1 = true;
