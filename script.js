@@ -15302,9 +15302,10 @@ function updateViruses(localCells) {
 function MPC() {
     if (!globalBlob || !globalBlob.game || !globalBlob.game._localPlayerCells || !globalBlob.game.cellMgr || !globalBlob.game._client) return;
 
+    const deathPopup = document.getElementById(1);
     if (!globalBlob.alive) {
         globalBlob.game.respawn();
-        deathPopup = document.getElementById(1);
+        // это уже дописал я, возможно надо переделать
         deathPopup.style.display = 'none';
     }
 
