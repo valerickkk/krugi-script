@@ -15314,6 +15314,7 @@ function MPC() {
         globalBlob.game.respawn();
         // это уже дописал я, возможно надо переделать
         const deathPopup = document.querySelector('[data-popup-id="deathPopup"]');
+        console.log(deathPopup)
         deathPopup.style.display = 'none';
     }
 
