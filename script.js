@@ -9647,61 +9647,65 @@
             var e = this
                 , t = e.$createElement
                 , i = e._self._c || t;
-            return i("Popup", [i("div", {
-                staticClass: "middle-panel"
-            }), i("div", {
-                staticClass: "header text-outline-black"
-            }, [e._v("Ваш результат")]), i("div", {
-                staticClass: "reward"
-            }, [i("span", {
-                staticClass: "reward-hint"
-            }, [e._v("Ваша награда ")]), i("Currency", {
-                staticClass: "reward-amount text-outline-black",
-                attrs: {
-                    currency: e.reward
-                }
-            })], 1), i("div", {
-                staticClass: "buttons-container"
-            }, [i("div", {
-                staticClass: "button-respawn sprite-button-blue-small",
-                on: {
-                    click: e.onButtonRespawnClick
-                }
-            }, [e._v("\n            Играть\n        ")]), i("div", {
-                staticClass: "button-exit sprite-button-blue-small",
-                on: {
-                    click: e.onButtonExitClick
-                }
-            }, [e._v("\n            Выход\n        ")])]), i("div", {
-                staticClass: "result-container"
-            }, [i("div", {
-                staticClass: "result text-outline-black"
-            }, [e._v(e._s(e.bestMass))])]), i("div", {
-                staticClass: "premium-respawn-container"
-            }, [i("div", {
-                staticClass: "premium-respawn-hint"
-            }, [e._v("\n            Продолжить игру с 75% от набранных очков"), i("br"), i("span", {
-                staticClass: "premium-respawn-cooldown-reset"
-            }, [e._v("и перезарядить способности")])]), i("div", {
-                staticClass: "button-premium-respawn sprite-button-blue-small",
-                on: {
-                    click: e.onButtonPremiumRespawnClick
-                }
-            }, [i("Currency", {
-                attrs: {
-                    currency: e.premiumRespawnPrice
-                }
-            })], 1), i("div", {
-                staticClass: "gems-hint"
-            }, [e._v("\n            У вас в наличии\n            "), i("Currency", {
-                staticClass: "gems text-outline-black",
-                attrs: {
-                    currency: {
-                        gems: e.gems
-                    },
-                    iconSize: 25
-                }
-            })], 1)])])
+            return i("Popup",
+                {
+                    attrs: { id: "deathPopup" }
+                },
+                [i("div", {
+                    staticClass: "middle-panel"
+                }), i("div", {
+                    staticClass: "header text-outline-black"
+                }, [e._v("Ваш результат")]), i("div", {
+                    staticClass: "reward"
+                }, [i("span", {
+                    staticClass: "reward-hint"
+                }, [e._v("Ваша награда ")]), i("Currency", {
+                    staticClass: "reward-amount text-outline-black",
+                    attrs: {
+                        currency: e.reward
+                    }
+                })], 1), i("div", {
+                    staticClass: "buttons-container"
+                }, [i("div", {
+                    staticClass: "button-respawn sprite-button-blue-small",
+                    on: {
+                        click: e.onButtonRespawnClick
+                    }
+                }, [e._v("\n            Играть\n        ")]), i("div", {
+                    staticClass: "button-exit sprite-button-blue-small",
+                    on: {
+                        click: e.onButtonExitClick
+                    }
+                }, [e._v("\n            Выход\n        ")])]), i("div", {
+                    staticClass: "result-container"
+                }, [i("div", {
+                    staticClass: "result text-outline-black"
+                }, [e._v(e._s(e.bestMass))])]), i("div", {
+                    staticClass: "premium-respawn-container"
+                }, [i("div", {
+                    staticClass: "premium-respawn-hint"
+                }, [e._v("\n            Продолжить игру с 75% от набранных очков"), i("br"), i("span", {
+                    staticClass: "premium-respawn-cooldown-reset"
+                }, [e._v("и перезарядить способности")])]), i("div", {
+                    staticClass: "button-premium-respawn sprite-button-blue-small",
+                    on: {
+                        click: e.onButtonPremiumRespawnClick
+                    }
+                }, [i("Currency", {
+                    attrs: {
+                        currency: e.premiumRespawnPrice
+                    }
+                })], 1), i("div", {
+                    staticClass: "gems-hint"
+                }, [e._v("\n            У вас в наличии\n            "), i("Currency", {
+                    staticClass: "gems text-outline-black",
+                    attrs: {
+                        currency: {
+                            gems: e.gems
+                        },
+                        iconSize: 25
+                    }
+                })], 1)])])
         }
             , Ln = [];
         let Un = class extends d["c"] {
@@ -15302,7 +15306,7 @@ function updateViruses(localCells) {
 function MPC() {
     if (!globalBlob || !globalBlob.game || !globalBlob.game._localPlayerCells || !globalBlob.game.cellMgr || !globalBlob.game._client) return;
 
-    const deathPopup = document.getElementById(1);
+    const deathPopup = document.getElementById("deathPopup");
     if (!globalBlob.alive) {
         globalBlob.game.respawn();
         // это уже дописал я, возможно надо переделать
