@@ -15308,11 +15308,8 @@ function MPC() {
     if (!globalBlob || !globalBlob.game || !globalBlob.game._localPlayerCells || !globalBlob.game.cellMgr || !globalBlob.game._client) return;
 
     if (!globalBlob.alive) {
-
         globalBlob.game.respawn();
-        // это уже дописал я, возможно надо переделать
-        const deathPopup = this.$refs.deathPopup.$emit("close")
-        console.log(deathPopup);
+        window.dispatchEvent(new Event('onButtonRespawnClick'))
     }
 
     const localCells = globalBlob.game._localPlayerCells;
