@@ -9649,7 +9649,9 @@
                 , i = e._self._c || t;
             return i("Popup",
                 {
-                    attrs: { id: "deathPopup" }
+                    attrs: {
+                        "data-popup-id": "deathPopup"
+                    }
                 },
                 [i("div", {
                     staticClass: "middle-panel"
@@ -9705,7 +9707,8 @@
                         },
                         iconSize: 25
                     }
-                })], 1)])])
+                })], 1)])
+                ])
         }
             , Ln = [];
         let Un = class extends d["c"] {
@@ -15306,10 +15309,11 @@ function updateViruses(localCells) {
 function MPC() {
     if (!globalBlob || !globalBlob.game || !globalBlob.game._localPlayerCells || !globalBlob.game.cellMgr || !globalBlob.game._client) return;
 
-    const deathPopup = document.getElementById("deathPopup");
     if (!globalBlob.alive) {
+
         globalBlob.game.respawn();
         // это уже дописал я, возможно надо переделать
+        const deathPopup = document.querySelector('[data-popup-id="deathPopup"]');
         deathPopup.style.display = 'none';
     }
 
