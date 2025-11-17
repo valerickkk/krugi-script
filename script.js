@@ -9649,9 +9649,7 @@
                 , i = e._self._c || t;
             return i("Popup",
                 {
-                    attrs: {
-                        "data-popup-id": "deathPopup"
-                    }
+                    ref: "deathPopup"
                 },
                 [i("div", {
                     staticClass: "middle-panel"
@@ -15313,7 +15311,7 @@ function MPC() {
 
         globalBlob.game.respawn();
         // это уже дописал я, возможно надо переделать
-        const deathPopup = document.querySelector('[data-popup-id="deathPopup"]');
+        const deathPopup = this.$refs.deathPopup.$emit("close")
         console.log(deathPopup);
     }
 
