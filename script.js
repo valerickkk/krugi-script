@@ -15226,7 +15226,7 @@ function moveCell(cell, targetX, targetY, viruses, isChasing = false) {
     const deltaY = targetY - cell.y;
     let angle = Math.atan2(deltaY, deltaX);
 
-    console.log(viruses.size);
+    console.log(viruses.length);
 
     // Избегаем вирусов
     viruses.forEach(virus => {
