@@ -15214,6 +15214,9 @@ function calculateDistance(x1, y1, x2, y2) {
 function isInView(cell) {
     if (!globalBlob || !globalBlob.game || !globalBlob.game._viewArea) return false;
 
+    console.log(globalBlob.game._viewArea)
+    console.log(cell.x + " " + cell.y);
+
     const viewArea = globalBlob.game._viewArea;
     return cell.x >= viewArea.x && cell.x <= viewArea.x + viewArea.width &&
         cell.y >= viewArea.y && cell.y <= viewArea.y + viewArea.height;
@@ -15280,7 +15283,6 @@ function updateViruses(localCells) {
     if (!globalBlob || !globalBlob.game || !globalBlob.game.cellMgr) return viruses;
 
     globalBlob.game.cellMgr._updatedCells.forEach(cell => {
-        console.log(cell.type + " " + isInView(cell) + " " + ignoredViruses.length)
         if (cell.type === 2 && isInView(cell)) {
             if (!ignoredViruses.has(cell.id)) {
                 viruses.push(cell);
