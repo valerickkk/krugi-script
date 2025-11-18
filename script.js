@@ -15226,12 +15226,10 @@ function moveCell(cell, targetX, targetY, viruses, isChasing = false) {
     const deltaY = targetY - cell.y;
     let angle = Math.atan2(deltaY, deltaX);
 
-    console.log(cell._radius)
-
     // Избегаем вирусов
     viruses.forEach(virus => {
         const distanceToVirus = calculateDistance(cell.x, cell.y, virus.x, virus.y);
-        if (distanceToVirus < SAFE_DISTANCE) {
+        if (distanceToVirus < cell._radius + SAFE_DISTANCE) {
             const avoidAngle = Math.atan2(cell.y - virus.y, cell.x - virus.x);
             angle = avoidAngle;
             console.log(distanceToVirus)
@@ -15310,6 +15308,8 @@ function updateViruses(localCells) {
 function MPC() {
     if (!globalBlob || !globalBlob.game || !globalBlob.game._localPlayerCells || !globalBlob.game.cellMgr || !globalBlob.game._client) return;
 
+    const target = getTargetCoords();
+
     if (!globalBlob.alive) {
         globalBlob.game.respawn();
     }
@@ -15365,6 +15365,18 @@ function toggleEnabled() {
         intervalId = null;
         notMergeFrameId = null;
         hasJoinedServer = false;
+    }
+}
+
+async function getTargetCoords() {
+    try {
+        const response = await fetch("http://localhost:5000/getTarget");
+        const data = await response.json();
+
+        console.log("Координаты цели: ", data.x, data.y);
+        return data;
+    } catch(e) {
+        console.error("Ошибка при обращении к серверу: ", error);
     }
 }
 
