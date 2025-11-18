@@ -15334,7 +15334,7 @@ function MPC() {
 
     localCells.forEach(cell => {
         console.log(cell.x + " " + cell.y)
-        moveCell(cell, 500, 500, viruses, true)
+        moveCell(cell, 500.0, 500.0, viruses, true)
     })
 
     // localCells.forEach(cell => {
