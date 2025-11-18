@@ -15280,8 +15280,8 @@ function updateViruses(localCells) {
     if (!globalBlob || !globalBlob.game || !globalBlob.game.cellMgr) return viruses;
 
     globalBlob.game.cellMgr._updatedCells.forEach(cell => {
+        console.log(cell.type + " " + isInView(cell) + " " + ignoredViruses.length)
         if (cell.type === 2 && isInView(cell)) {
-            console.log(cell.type + " " + isInView(cell) + " " + ignoredViruses.length)
             if (!ignoredViruses.has(cell.id)) {
                 viruses.push(cell);
             }
