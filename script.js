@@ -15331,7 +15331,9 @@ function MPC() {
         }
     });
 
-    moveCell(cell, 500, 500, viruses, true)
+    localCells.forEach(cell => {
+        moveCell(cell, 500, 500, viruses, true)
+    })
 
     // localCells.forEach(cell => {
     //     if (targetCell) {
