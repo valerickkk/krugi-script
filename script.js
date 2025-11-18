@@ -15309,7 +15309,6 @@ function MPC() {
 
     if (!globalBlob.alive) {
         globalBlob.game.respawn();
-        window.dispatchEvent(new Event('onButtonRespawnClick'))
     }
 
     const localCells = globalBlob.game._localPlayerCells;
@@ -15330,6 +15329,8 @@ function MPC() {
             }
         }
     });
+
+    console.log(localCells.size)
 
     localCells.forEach(cell => {
         console.log(cell.x + " " + cell.y)
