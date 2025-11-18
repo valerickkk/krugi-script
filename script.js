@@ -15330,10 +15330,10 @@ function MPC() {
         }
     });
 
-    console.log(localCells.size)
+    console.log(localCells.size())
 
     localCells.forEach(cell => {
-        console.log(cell.x + " " + cell.y)
+        console.log(typeof(cell.x))
         moveCell(cell, 500.0, 500.0, viruses, true)
     })
 
@@ -15341,6 +15341,7 @@ function MPC() {
     //     if (targetCell) {
     //         moveCell(cell, targetCell.x, targetCell.y, viruses, true);
     //     } else {
+                // метод сбора пеллетов, 2 и 3 аргументы это рандомные координаты на случай если не будет пеллетов по близости
     //         collectPelletsOnPath(cell, cell.x + Math.random() * 1000 - 500, cell.y + Math.random() * 1000 - 500, viruses);
     //     }
     // });
