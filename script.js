@@ -15322,6 +15322,7 @@ function MPC() {
     globalBlob.game.cellMgr._updatedCells.forEach(updatedCell => {
         const distance = calculateDistance(localCells[0].x, localCells[0].y, updatedCell.x, updatedCell.y);
 
+        // если общая масса текущего бота больше 7500, то бот готов двигаться к целевой клетке-игроку
         if (totalMass > 7500 && updatedCell.type === 0 && updatedCell.mass > 1000 && !localCells.includes(updatedCell)) {
             if (distance < targetCellDistance) {
                 targetCellDistance = distance;
@@ -15330,13 +15331,15 @@ function MPC() {
         }
     });
 
-    localCells.forEach(cell => {
-        if (targetCell) {
-            moveCell(cell, targetCell.x, targetCell.y, viruses, true);
-        } else {
-            collectPelletsOnPath(cell, cell.x + Math.random() * 1000 - 500, cell.y + Math.random() * 1000 - 500, viruses);
-        }
-    });
+    moveCell(cell, 500, 500, viruses, true)
+
+    // localCells.forEach(cell => {
+    //     if (targetCell) {
+    //         moveCell(cell, targetCell.x, targetCell.y, viruses, true);
+    //     } else {
+    //         collectPelletsOnPath(cell, cell.x + Math.random() * 1000 - 500, cell.y + Math.random() * 1000 - 500, viruses);
+    //     }
+    // });
 
     sendInputBlock = true;
 }
