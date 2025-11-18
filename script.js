@@ -15283,7 +15283,7 @@ function updateViruses(localCells) {
 
     if (!globalBlob || !globalBlob.game || !globalBlob.game.cellMgr) return viruses;
 
-    console.log(cellMgr)
+    console.log(globalBlob.game.cellMgr)
 
     globalBlob.game.cellMgr._updatedCells.forEach(cell => {
         if (cell.type === 2 && isInView(cell)) {
