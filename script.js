@@ -15333,7 +15333,7 @@ function MPC() {
     });
 
     localCells.forEach(cell => {
-        moveCell(cell, cell.x + 500, cell.y + 500, viruses, true)
+        moveCell(cell, cell.x + 500, cell.y + 500, viruses)
     })
 
     // localCells.forEach(cell => {
