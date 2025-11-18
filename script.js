@@ -15330,11 +15330,8 @@ function MPC() {
         }
     });
 
-    console.log(localCells.size)
-
     localCells.forEach(cell => {
-        console.log(typeof(cell.x))
-        moveCell(cell, 500.0, 500.0, viruses, true)
+        moveCell(cell, cell.x + 500, cell.y + 500, viruses, true)
     })
 
     // localCells.forEach(cell => {
