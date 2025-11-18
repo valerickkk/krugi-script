@@ -15229,10 +15229,10 @@ function moveCell(cell, targetX, targetY, viruses, isChasing = false) {
     // Избегаем вирусов
     viruses.forEach(virus => {
         const distanceToVirus = calculateDistance(cell.x, cell.y, virus.x, virus.y);
-        console.log(distanceToVirus + " " + SAFE_DISTANCE);
         if (distanceToVirus < SAFE_DISTANCE) {
             const avoidAngle = Math.atan2(cell.y - virus.y, cell.x - virus.x);
             angle = avoidAngle;
+            console.log(distanceToVirus)
         }
     });
 
