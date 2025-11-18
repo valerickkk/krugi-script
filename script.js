@@ -15283,6 +15283,7 @@ function updateViruses(localCells) {
 
     globalBlob.game.cellMgr._updatedCells.forEach(cell => {
         if (cell.type === 2 && isInView(cell)) {
+            console.log("VIRUS DETECTED!")
             if (!ignoredViruses.has(cell.id)) {
                 viruses.push(cell);
             }
