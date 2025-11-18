@@ -15214,12 +15214,9 @@ function calculateDistance(x1, y1, x2, y2) {
 function isInView(cell) {
     if (!globalBlob || !globalBlob.game || !globalBlob.game._viewArea) return false;
 
-    console.log(globalBlob.game._viewArea)
-    console.log(cell.x + " " + cell.y);
-
     const viewArea = globalBlob.game._viewArea;
-    return cell.x >= viewArea.x && cell.x <= viewArea.x + viewArea.width &&
-        cell.y >= viewArea.y && cell.y <= viewArea.y + viewArea.height;
+    return cell.x >= viewArea.minX && cell.x <= viewArea.maxX &&
+        cell.y >= viewArea.minY && cell.y <= viewArea.maxY;
 }
 
 function moveCell(cell, targetX, targetY, viruses, isChasing = false) {
