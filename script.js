@@ -15279,15 +15279,10 @@ function updateViruses(localCells) {
     const viruses = [];
     const currentTime = Date.now();
 
-    console.log("VIRUS SCANNING...")
-
     if (!globalBlob || !globalBlob.game || !globalBlob.game.cellMgr) return viruses;
-
-    console.log(globalBlob.game.cellMgr._updatedCells)
 
     globalBlob.game.cellMgr._updatedCells.forEach(cell => {
         if (cell.type === 2 && isInView(cell)) {
-            console.log("VIRUS DETECTED!")
             if (!ignoredViruses.has(cell.id)) {
                 viruses.push(cell);
             }
@@ -15337,6 +15332,7 @@ function MPC() {
         }
     });
 
+    console.log(viruses.length);
     localCells.forEach(cell => {
         moveCell(cell, cell.x + 500, cell.y + 500, viruses)
     })
