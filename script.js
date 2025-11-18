@@ -15330,7 +15330,7 @@ function MPC() {
         }
     });
 
-    console.log(localCells.size())
+    console.log(localCells.size)
 
     localCells.forEach(cell => {
         console.log(typeof(cell.x))
