@@ -15226,7 +15226,7 @@ function moveCell(cell, targetX, targetY, viruses, isChasing = false) {
     const deltaY = targetY - cell.y;
     let angle = Math.atan2(deltaY, deltaX);
 
-    console.log("V-3 " + viruses.length);
+    console.log("V-4 " + viruses.length);
 
     // Избегаем вирусов
     viruses.forEach(virus => {
@@ -15283,8 +15283,7 @@ function updateViruses(localCells) {
 
     if (!globalBlob || !globalBlob.game || !globalBlob.game.cellMgr) return viruses;
 
-    const notNullCells = globalBlob.game.cellMgr._cells.filter(p => p != null && p.type !== 1);
-    console.log(notNullCells)
+    console.log(globalBlob.game.cellMgr._updatedCells)
 
     globalBlob.game.cellMgr._updatedCells.forEach(cell => {
         if (cell.type === 2 && isInView(cell)) {
