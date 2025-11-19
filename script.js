@@ -15241,7 +15241,6 @@ function moveCell(cell, targetX, targetY, viruses, isChasing = false) {
         if (distanceToVirus < cell._radius + SAFE_DISTANCE) {
             const avoidAngle = Math.atan2(cell.y - virus.y, cell.x - virus.x);
             angle = avoidAngle;
-            console.log(distanceToVirus)
         }
     });
 
@@ -15354,10 +15353,13 @@ function MPC() {
 }
 
 function mainUserMode() {
-
+    
     if (!globalBlob.alive) {
+        console.log("DEAD")
         return;
     }
+
+    console.log("ALIVE")
 
     let biggestCell = globalBlob.game._localPlayerCells[0]
     globalBlob.game._localPlayerCells.forEach(cell => {
