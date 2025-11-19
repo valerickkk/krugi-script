@@ -15325,6 +15325,8 @@ function MPC() {
     const playerCanterX = localCells.reduce((acc, cell) => acc + cell.x) / localCells.length
     const playerCanterY = localCells.reduce((acc, cell) => acc + cell.y) / localCells.length
 
+    console.log(playerCanterX, playerCanterY);
+
     const viruses = updateViruses(localCells);
     let targetCell = null;
     let targetCellDistance = Infinity;
@@ -15341,7 +15343,6 @@ function MPC() {
     });
 
     if (target && totalMass > 200) {
-        console.log(target)
         moveCell(playerCanterX, playerCanterY, target.x, target.y, viruses, true);
     } else {
         // метод сбора пеллетов, 2 и 3 аргументы это рандомные координаты на случай если не будет пеллетов по близости
@@ -15408,7 +15409,6 @@ socket.onmessage = msg => {
         return;
     }
     target = JSON.parse(msg.data);
-    console.log(" coords:", target);
 };
 
 function sendCoords(x, y) {
