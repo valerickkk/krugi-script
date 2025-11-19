@@ -13184,6 +13184,7 @@ const ADAPTATION_TELEPORT = 'KeyD'; // Макрос E + Q (KeyD)
 const FREEZE_KEY = 'KeyP'; // Дергание
 const ADAPTATION_SNOWBALL = 'KeyY'; // Макрос E + S (Адаптация и снежок)
 const botMPCKey = "KeyI"; // Вкл/Выкл бота на собирание колючек 
+const mainUserModeKey = "KeyW"; // Вкл/Выкл бота на собирание колючек 
 const panel_notificati_ons = "KeyM";//Вкл/Выкл панели уведомлений
 const TOGGLE_AURA_KEY = "ControlLeft";//Вкл/Выкл общей ауры
 const STOPNB_SPLIT = "Space";
@@ -13257,11 +13258,13 @@ let cordsSwitch1 = false;
 let DISTANCE_TO_MOVE = 7500;
 let SAFE_MULTIPLIER = 1.1;
 let MPC_INTERVAL = 100;
+let MAIN_MODE_INTERVAL = 200;
 let THREAT_DISTANCE = 100;
 let MASS_THRESHOLD = 200;
 let MASS_DROP_WINDOW = 4000;
 let logCounter = 0;
-let enabled = false;
+let botModeEnabled = false;
+let mainUserModeEnabled = false;
 let mpcFrameId = null;
 let notMergeFrameId = null;
 let intervalId = null;
@@ -14855,9 +14858,11 @@ document.addEventListener("keydown", function (event) {
             }, 50);
         }, 50);
     } else if (event.code === botMPCKey) {
-        toggleEnabled();
+        toggleBotMode();
     } else if (event.code === TOGGLE_AURA_KEY) {
         toggleMassDecayAura();
+    } else if (event.code === mainUserModeKey) {
+        toggleMainUserMode();
     }
 });
 
@@ -15348,16 +15353,29 @@ function MPC() {
     sendInputBlock = true;
 }
 
+function mainUserMode() {
+    biggestCell = globalBlob.game._localPlayerCells[0]
+    globalBlob.game._localPlayerCells.forEach(cell => {
+        if(cell.mass > biggestCell.mass) {
+            biggestCell = cell
+        }
+    })
+
+    sendCoords(biggestCell.x, biggestCell.y)
+}
+
 // Toggle bot on/off
-function toggleEnabled() {
-    if (!enabled) {
-        enabled = true;
+function toggleBotMode() {
+    if (!botModeEnabled) {
+        botModeEnabled = true;
+        // если включен режим бота, явно выключаем режим главного героя, чтоб не было двойного поведения
+        mainUserModeEnabled = false;
         lastTotalMass = getTotalMass(globalBlob.game._localPlayerCells);
         startTime = Date.now();
         intervalId = setInterval(MPC, MPC_INTERVAL);
         notMergeFrameId = requestAnimationFrame(notMerge);
     } else {
-        enabled = false;
+        botModeEnabled = false;
         clearInterval(intervalId);
         cancelAnimationFrame(notMergeFrameId);
         sendInputBlock = false;
@@ -15367,11 +15385,37 @@ function toggleEnabled() {
     }
 }
 
+// Включить режим главного героя, текущий аккаунт будет делиться своей позицией с другими ботами, боты будут его преследовать.
+function toggleMainUserMode() {
+    if (!mainUserModeEnabled) {
+        mainUserModeEnabled = true;
+        // если включен режим главного героя, явно выключаем режим бота, чтоб не было двойного поведения
+        botModeEnabled = false;
+        lastTotalMass = getTotalMass(globalBlob.game._localPlayerCells);
+        startTime = Date.now();
+        intervalId = setInterval(mainUserMode, MAIN_MODE_INTERVAL);
+    } else {
+        mainUserModeEnabled = false;
+        clearInterval(intervalId);
+        sendInputBlock = false;
+        intervalId = null;
+        hasJoinedServer = false;
+    }
+}
+
 const socket = new WebSocket("ws://localhost:8081");
+
 socket.onmessage = msg => {
+    if (!botModeEnabled) {
+        return;
+    }
     target = JSON.parse(msg.data);
     console.log(" coords:", target);
 };
+
+function sendCoords(x, y) {
+    socket.send(JSON.stringify({ x, y }));
+}
 
 const eventC = new KeyboardEvent('keydown', {
     key: 'c',
