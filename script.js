@@ -15250,8 +15250,8 @@ function moveCell(cell, targetX, targetY, viruses, isChasing = false) {
     const atan = Math.atan2(newX - globalBlob.game._viewArea.centerX, newY - globalBlob.game._viewArea.centerY);
 
     globalBlob.game._client.buffer.writeUInt8(1);
-    globalBlob.game._client.buffer.writeFloat(Math.sin(atan) * (isChasing ? 1 : 9999999999));
-    globalBlob.game._client.buffer.writeFloat(Math.cos(atan) * (isChasing ? 1 : 9999999999));
+    globalBlob.game._client.buffer.writeFloat(Math.sin(atan) * 9999999999);
+    globalBlob.game._client.buffer.writeFloat(Math.cos(atan) * 9999999999);
 
     if (isChasing) {
         globalBlob.game._client.buffer.writeUInt8(2);
@@ -15341,9 +15341,9 @@ function MPC() {
     });
 
     localCells.forEach(cell => {
-        if (target) {
+        if (target && totalMass > 200) {
             console.log(target)
-            moveCell(cell, target.x, target.y, viruses);
+            moveCell(cell, target.x, target.y, viruses, true);
         } else {
             // метод сбора пеллетов, 2 и 3 аргументы это рандомные координаты на случай если не будет пеллетов по близости
             collectPelletsOnPath(cell, cell.x + Math.random() * 1000 - 500, cell.y + Math.random() * 1000 - 500, viruses);
@@ -15354,6 +15354,11 @@ function MPC() {
 }
 
 function mainUserMode() {
+
+    if (!globalBlob.alive) {
+        return;
+    }
+
     let biggestCell = globalBlob.game._localPlayerCells[0]
     globalBlob.game._localPlayerCells.forEach(cell => {
         if(cell.mass > biggestCell.mass) {
