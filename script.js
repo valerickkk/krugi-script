@@ -15337,6 +15337,7 @@ function MPC() {
 
     localCells.forEach(cell => {
         if (target) {
+            console.log(target)
             moveCell(cell, target.x, target.y, viruses);
         } else {
             // метод сбора пеллетов, 2 и 3 аргументы это рандомные координаты на случай если не будет пеллетов по близости
