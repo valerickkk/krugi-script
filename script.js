@@ -15227,25 +15227,25 @@ function isInView(cell) {
         cell.y >= viewArea.minY && cell.y <= viewArea.maxY;
 }
 
-function moveCell(cell, targetX, targetY, viruses, isChasing = false) {
+function moveCell(playerX, playerY, targetX, targetY, viruses, isChasing = false) {
 
-    if (!cell || !globalBlob || !globalBlob.game || !globalBlob.game._viewArea) return;
+    if (!playerX || !playerY || !globalBlob || !globalBlob.game || !globalBlob.game._viewArea) return;
 
-    const deltaX = targetX - cell.x;
-    const deltaY = targetY - cell.y;
+    const deltaX = targetX - playerX;
+    const deltaY = targetY - playerY;
     let angle = Math.atan2(deltaY, deltaX);
 
-    // Избегаем вирусов
-    viruses.forEach(virus => {
-        const distanceToVirus = calculateDistance(cell.x, cell.y, virus.x, virus.y);
-        if (distanceToVirus < cell._radius + SAFE_DISTANCE) {
-            const avoidAngle = Math.atan2(cell.y - virus.y, cell.x - virus.x);
-            angle = avoidAngle;
-        }
-    });
+    // // Избегаем вирусов
+    // viruses.forEach(virus => {
+    //     const distanceToVirus = calculateDistance(cell.x, cell.y, virus.x, virus.y);
+    //     if (distanceToVirus < cell._radius + SAFE_DISTANCE) {
+    //         const avoidAngle = Math.atan2(cell.y - virus.y, cell.x - virus.x);
+    //         angle = avoidAngle;
+    //     }
+    // });
 
-    const newX = cell.x + Math.cos(angle) * DISTANCE_TO_MOVE;
-    const newY = cell.y + Math.sin(angle) * DISTANCE_TO_MOVE;
+    const newX = playerX + Math.cos(angle) * DISTANCE_TO_MOVE;
+    const newY = playerY + Math.sin(angle) * DISTANCE_TO_MOVE;
     const atan = Math.atan2(newX - globalBlob.game._viewArea.centerX, newY - globalBlob.game._viewArea.centerY);
 
     globalBlob.game._client.buffer.writeUInt8(1);
@@ -15257,7 +15257,7 @@ function moveCell(cell, targetX, targetY, viruses, isChasing = false) {
     }
 }
 
-function collectPelletsOnPath(cell, targetX, targetY, viruses) {
+function collectPelletsOnPath(playerX, playerY, targetX, targetY, viruses) {
     let closestPellet = null;
     let closestPelletDistance = Infinity;
 
@@ -15265,7 +15265,7 @@ function collectPelletsOnPath(cell, targetX, targetY, viruses) {
 
     const notNullPellet = globalBlob.game.cellMgr._cells.filter(p => p != null && p.type === 1);
     notNullPellet.forEach(pellet => {
-        const distance = calculateDistance(cell.x, cell.y, pellet.x, pellet.y);
+        const distance = calculateDistance(playerX, playerY, pellet.x, pellet.y);
 
         const isPelletSafe = viruses.every(virus => calculateDistance(pellet.x, pellet.y, virus.x, virus.y) > SAFE_DISTANCE);
 
@@ -15276,9 +15276,9 @@ function collectPelletsOnPath(cell, targetX, targetY, viruses) {
     });
 
     if (closestPellet) {
-        moveCell(cell, closestPellet.x, closestPellet.y, viruses);
+        moveCell(playerX, playerY, closestPellet.x, closestPellet.y, viruses);
     } else {
-        moveCell(cell, targetX, targetY, viruses);
+        moveCell(playerX, playerY, targetX, targetY, viruses);
     }
 }
 
@@ -15322,15 +15322,16 @@ function MPC() {
 
     const localCells = globalBlob.game._localPlayerCells;
     const totalMass = getTotalMass(localCells);
+    const playerCanterX = localCells.reduce((acc, cell) => acc + cell.x) / localCells.length
+    const playerCanterY = localCells.reduce((acc, cell) => acc + cell.y) / localCells.length
 
-    const viruses = updateViruses(localCells);
+    //const viruses = updateViruses(localCells);
     let targetCell = null;
     let targetCellDistance = Infinity;
 
     globalBlob.game.cellMgr._updatedCells.forEach(updatedCell => {
         const distance = calculateDistance(localCells[0].x, localCells[0].y, updatedCell.x, updatedCell.y);
 
-        // если общая масса текущего бота больше 7500, то бот готов двигаться к целевой клетке-игроку
         if (totalMass > 7500 && updatedCell.type === 0 && updatedCell.mass > 1000 && !localCells.includes(updatedCell)) {
             if (distance < targetCellDistance) {
                 targetCellDistance = distance;
@@ -15339,15 +15340,13 @@ function MPC() {
         }
     });
 
-    localCells.forEach(cell => {
-        if (target && totalMass > 200) {
-            console.log(target)
-            moveCell(cell, target.x, target.y, viruses, true);
-        } else {
-            // метод сбора пеллетов, 2 и 3 аргументы это рандомные координаты на случай если не будет пеллетов по близости
-            collectPelletsOnPath(cell, cell.x + Math.random() * 1000 - 500, cell.y + Math.random() * 1000 - 500, viruses);
-        }
-    });
+    if (target && totalMass > 200) {
+        console.log(target)
+        moveCell(playerCanterX, playerCanterY, target.x, target.y, viruses, true);
+    } else {
+        // метод сбора пеллетов, 2 и 3 аргументы это рандомные координаты на случай если не будет пеллетов по близости
+        collectPelletsOnPath(playerCanterX, playerCanterY, cell.x + Math.random() * 1000 - 500, cell.y + Math.random() * 1000 - 500, viruses);
+    }
 
     sendInputBlock = true;
 }
@@ -15355,7 +15354,7 @@ function MPC() {
 function mainUserMode() {
     let biggestCell = globalBlob.game._localPlayerCells[0]
     globalBlob.game._localPlayerCells.forEach(cell => {
-        if(cell.mass > biggestCell.mass) {
+        if (cell.mass > biggestCell.mass) {
             biggestCell = cell
         }
     })
