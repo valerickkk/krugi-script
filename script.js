@@ -15354,7 +15354,7 @@ function MPC() {
 }
 
 function mainUserMode() {
-    biggestCell = globalBlob.game._localPlayerCells[0]
+    let biggestCell = globalBlob.game._localPlayerCells[0]
     globalBlob.game._localPlayerCells.forEach(cell => {
         if(cell.mass > biggestCell.mass) {
             biggestCell = cell
