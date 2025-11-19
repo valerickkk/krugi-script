@@ -15369,7 +15369,7 @@ function toggleEnabled() {
 }
 
 function requestCoords() {
-    const event = new CustomEvent("requestTargetCoords");
+    const event = new CustomEvent("requestTargetCoords", {bubbles: true, composed: true});
     window.dispatchEvent(event);
     console.log("Event dispatched!")
 }
