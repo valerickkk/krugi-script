@@ -15353,14 +15353,6 @@ function MPC() {
 }
 
 function mainUserMode() {
-    
-    if (!globalBlob.alive) {
-        console.log("DEAD")
-        return;
-    }
-
-    console.log("ALIVE")
-
     let biggestCell = globalBlob.game._localPlayerCells[0]
     globalBlob.game._localPlayerCells.forEach(cell => {
         if(cell.mass > biggestCell.mass) {
