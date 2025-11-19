@@ -15312,6 +15312,8 @@ function MPC() {
         globalBlob.game.respawn();
     }
 
+    requestCoords()
+
     const localCells = globalBlob.game._localPlayerCells;
     const totalMass = getTotalMass(localCells);
 
@@ -15366,16 +15368,9 @@ function toggleEnabled() {
     }
 }
 
-async function getTargetCoords() {
-    try {
-        const response = await fetch("http://127.0.0.1:5000/getTarget");
-        const data = await response.json();
-
-        console.log("Координаты цели: ", data.x, data.y);
-        return data;
-    } catch(e) {
-        console.error("Ошибка при обращении к серверу: ", error);
-    }
+function requestCoords() {
+    const event = new CustomEvent("requestTargetCoords");
+    window.dispatchEvent(event);
 }
 
 // Слушаем событие от background
