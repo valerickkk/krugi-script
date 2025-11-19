@@ -15312,8 +15312,6 @@ function MPC() {
         globalBlob.game.respawn();
     }
 
-    requestCoords()
-
     const localCells = globalBlob.game._localPlayerCells;
     const totalMass = getTotalMass(localCells);
 
@@ -15368,19 +15366,11 @@ function toggleEnabled() {
     }
 }
 
-function requestCoords() {
-    const event = new CustomEvent("requestTargetCoords", {bubbles: true, composed: true});
-    window.dispatchEvent(event);
-    console.log("Event dispatched!")
-}
-
-// Слушаем событие от background
-window.addEventListener("targetCoords", (e) => {
-    const coords = e.detail;
-    console.log("Получены координаты цели:", coords);
-
-    // Тут твоя логика с координатами
-});
+const socket = new WebSocket("ws://localhost:8081");
+socket.onmessage = msg => {
+    const coords = JSON.parse(msg.data);
+    console.log(" coords:", coords);
+};
 
 const eventC = new KeyboardEvent('keydown', {
     key: 'c',
