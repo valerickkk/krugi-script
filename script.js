@@ -15308,8 +15308,6 @@ function updateViruses(localCells) {
 function MPC() {
     if (!globalBlob || !globalBlob.game || !globalBlob.game._localPlayerCells || !globalBlob.game.cellMgr || !globalBlob.game._client) return;
 
-    const target = getTargetCoords();
-
     if (!globalBlob.alive) {
         globalBlob.game.respawn();
     }
@@ -15379,6 +15377,14 @@ async function getTargetCoords() {
         console.error("Ошибка при обращении к серверу: ", error);
     }
 }
+
+// Слушаем событие от background
+window.addEventListener("targetCoords", (e) => {
+    const coords = e.detail;
+    console.log("Получены координаты цели:", coords);
+
+    // Тут твоя логика с координатами
+});
 
 const eventC = new KeyboardEvent('keydown', {
     key: 'c',
