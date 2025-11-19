@@ -15371,6 +15371,7 @@ function toggleEnabled() {
 function requestCoords() {
     const event = new CustomEvent("requestTargetCoords");
     window.dispatchEvent(event);
+    console.log("Event dispatched!")
 }
 
 // Слушаем событие от background
