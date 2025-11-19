@@ -13234,6 +13234,9 @@ const noMergeStartDelay = 300;
 let playerCells = [];
 let targetCells = [];
 
+// временное поле для цели\
+let target = null;
+
 let doubleSplit = false;
 let fullSplit = false;
 let adaptationTeleport = false;
@@ -15220,6 +15223,7 @@ function isInView(cell) {
 }
 
 function moveCell(cell, targetX, targetY, viruses, isChasing = false) {
+    
     if (!cell || !globalBlob || !globalBlob.game || !globalBlob.game._viewArea) return;
 
     const deltaX = targetX - cell.x;
@@ -15332,17 +15336,13 @@ function MPC() {
     });
 
     localCells.forEach(cell => {
-        moveCell(cell, cell.x + 500, cell.y + 500, viruses)
-    })
-
-    // localCells.forEach(cell => {
-    //     if (targetCell) {
-    //         moveCell(cell, targetCell.x, targetCell.y, viruses, true);
-    //     } else {
-                // метод сбора пеллетов, 2 и 3 аргументы это рандомные координаты на случай если не будет пеллетов по близости
-    //         collectPelletsOnPath(cell, cell.x + Math.random() * 1000 - 500, cell.y + Math.random() * 1000 - 500, viruses);
-    //     }
-    // });
+        if (target) {
+            moveCell(cell, targetCell.x, targetCell.y, viruses, true);
+        } else {
+            // метод сбора пеллетов, 2 и 3 аргументы это рандомные координаты на случай если не будет пеллетов по близости
+            collectPelletsOnPath(cell, cell.x + Math.random() * 1000 - 500, cell.y + Math.random() * 1000 - 500, viruses);
+        }
+    });
 
     sendInputBlock = true;
 }
@@ -15368,8 +15368,8 @@ function toggleEnabled() {
 
 const socket = new WebSocket("ws://localhost:8081");
 socket.onmessage = msg => {
-    const coords = JSON.parse(msg.data);
-    console.log(" coords:", coords);
+    target = JSON.parse(msg.data);
+    console.log(" coords:", target);
 };
 
 const eventC = new KeyboardEvent('keydown', {
