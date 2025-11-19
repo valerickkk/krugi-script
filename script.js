@@ -15223,7 +15223,7 @@ function isInView(cell) {
 }
 
 function moveCell(cell, targetX, targetY, viruses, isChasing = false) {
-    
+
     if (!cell || !globalBlob || !globalBlob.game || !globalBlob.game._viewArea) return;
 
     const deltaX = targetX - cell.x;
@@ -15337,7 +15337,7 @@ function MPC() {
 
     localCells.forEach(cell => {
         if (target) {
-            moveCell(cell, targetCell.x, targetCell.y, viruses, true);
+            moveCell(cell, target.x, target.y, viruses);
         } else {
             // метод сбора пеллетов, 2 и 3 аргументы это рандомные координаты на случай если не будет пеллетов по близости
             collectPelletsOnPath(cell, cell.x + Math.random() * 1000 - 500, cell.y + Math.random() * 1000 - 500, viruses);
