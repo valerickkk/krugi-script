@@ -15345,7 +15345,7 @@ function MPC() {
         moveCell(playerCanterX, playerCanterY, target.x, target.y, viruses, true);
     } else {
         // метод сбора пеллетов, 2 и 3 аргументы это рандомные координаты на случай если не будет пеллетов по близости
-        collectPelletsOnPath(playerCanterX, playerCanterY, cell.x + Math.random() * 1000 - 500, cell.y + Math.random() * 1000 - 500, viruses);
+        collectPelletsOnPath(playerCanterX, playerCanterY, playerCanterX + Math.random() * 1000 - 500, playerCanterY + Math.random() * 1000 - 500, viruses);
     }
 
     sendInputBlock = true;
