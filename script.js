@@ -15357,7 +15357,7 @@ function MPC() {
         moveCell(localCells[0].x, localCells[0].y, target.x, target.y, viruses, isChasing);
     } else {
         // метод сбора пеллетов, 2 и 3 аргументы это рандомные координаты на случай если не будет пеллетов по близости
-        collectPelletsOnPath(localCells[0].x, localCells[0].y, cell.x + Math.random() * 1000 - 500, cell.y + Math.random() * 1000 - 500, viruses);
+        collectPelletsOnPath(localCells[0].x, localCells[0].y, localCells[0].x + Math.random() * 1000 - 500, localCells[0].y + Math.random() * 1000 - 500, viruses);
     }
 
     sendInputBlock = true;
