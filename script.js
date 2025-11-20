@@ -15354,7 +15354,14 @@ function MPC() {
     }
 
     if (target && isChasing) {
-        moveCell(localCells[0].x, localCells[0].y, target.x, target.y, viruses, isChasing);
+        let minDistance = calculateDistance(localCells[0].x, localCells[0].x, target.x, target.y)
+        let closestCell = localCells[0]
+        localCells.forEach(cell => {
+            if (calculateDistance(cell.x, cell.y, target.x, target.y) < minDistance) {
+                closestCell = cell;
+            }
+        })
+        moveCell(closestCell.x, closestCell.y, target.x, target.y, viruses, isChasing);
     } else {
         // метод сбора пеллетов, 2 и 3 аргументы это рандомные координаты на случай если не будет пеллетов по близости
         collectPelletsOnPath(localCells[0].x, localCells[0].y, localCells[0].x + Math.random() * 1000 - 500, localCells[0].y + Math.random() * 1000 - 500, viruses);
