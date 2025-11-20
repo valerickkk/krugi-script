@@ -15313,14 +15313,20 @@ function updateViruses(localCells) {
     return viruses;
 }
 
+let isChasing = false;
+
 function MPC() {
     if (!globalBlob || !globalBlob.game || !globalBlob.game._localPlayerCells || !globalBlob.game.cellMgr || !globalBlob.game._client) return;
 
-    // if (!globalBlob.alive) {
-    //     globalBlob.game.respawn();
-    // }
-
+    // localCells - коллекция клеток текущего игрока/бота
     const localCells = globalBlob.game._localPlayerCells;
+
+    // localCells.length === 0 - это признак того, что бот умер
+    if (localCells.length === 0) {
+        isChasing = false;
+        globalBlob.game.respawn();
+    }
+
     const totalMass = getTotalMass(localCells);
     const playerCanterX = localCells.reduce((acc, cell) => acc + cell.x, 0) / localCells.length
     const playerCanterY = localCells.reduce((acc, cell) => acc + cell.y, 0) / localCells.length
@@ -15343,8 +15349,12 @@ function MPC() {
         }
     });
 
-    if (target && totalMass > 200) {
-        moveCell(playerCanterX, playerCanterY, target.x, target.y, viruses, true);
+    if (totalMass > 200 && !isChasing) {
+        isChasing = true;
+    }
+
+    if (target && isChasing) {
+        moveCell(playerCanterX, playerCanterY, target.x, target.y, viruses, isChasing);
     } else {
         // метод сбора пеллетов, 2 и 3 аргументы это рандомные координаты на случай если не будет пеллетов по близости
         collectPelletsOnPath(localCells[0].x, localCells[0].y, playerCanterX + Math.random() * 1000 - 500, playerCanterY + Math.random() * 1000 - 500, viruses);
