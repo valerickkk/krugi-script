@@ -15322,11 +15322,11 @@ function MPC() {
 
     const localCells = globalBlob.game._localPlayerCells;
     const totalMass = getTotalMass(localCells);
-    const playerCanterX = localCells.reduce((acc, cell) => acc + cell.x) / localCells.length
-    const playerCanterY = localCells.reduce((acc, cell) => acc + cell.y) / localCells.length
+    const playerCanterX = localCells.reduce((acc, cell) => acc + cell.x, 0) / localCells.length
+    const playerCanterY = localCells.reduce((acc, cell) => acc + cell.y, 0) / localCells.length
 
     console.log(localCells.length);
-    console.log(localCells.reduce((acc, cell) => acc + cell.x))
+    console.log(localCells.reduce((acc, cell) => acc + cell.x, 0))
 
     const viruses = updateViruses(localCells);
     let targetCell = null;
