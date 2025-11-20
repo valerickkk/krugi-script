@@ -15253,8 +15253,8 @@ function moveCell(playerX, playerY, targetX, targetY, otherPlayesCells, isChasin
     console.log("Y: " + playerY + " -> " + deltaY + " -> " + newY + " -> " + atan + " -> " + Math.cos(atan) * 1)
 
     globalBlob.game._client.buffer.writeUInt8(1);
-    globalBlob.game._client.buffer.writeFloat(Math.sin(atan) * 99999);
-    globalBlob.game._client.buffer.writeFloat(Math.cos(atan) * 99999);
+    globalBlob.game._client.buffer.writeFloat(Math.sin(atan) * DISTANCE_TO_MOVE);
+    globalBlob.game._client.buffer.writeFloat(Math.cos(atan) * DISTANCE_TO_MOVE);
 
     // globalBlob.game._client.buffer.writeUInt8(1);
     // globalBlob.game._client.buffer.writeFloat(newX);
