@@ -15229,36 +15229,68 @@ function isInView(cell) {
 
 function moveCell(playerX, playerY, targetX, targetY, otherPlayesCells, isChasing = false) {
 
-    if (!playerX || !playerY || !globalBlob || !globalBlob.game || !globalBlob.game._viewArea) return;
+    // if (!playerX || !playerY || !globalBlob || !globalBlob.game || !globalBlob.game._viewArea) return;
 
-    const deltaX = targetX - playerX;
-    const deltaY = targetY - playerY;
-    let angle = Math.atan2(deltaY, deltaX);
+    // const deltaX = targetX - playerX;
+    // const deltaY = targetY - playerY;
+    // let angle = Math.atan2(deltaY, deltaX);
 
-    // Избегаем других игроков
-    otherPlayesCells.forEach(cell => {
-        const distanceTocell = calculateDistance(playerX, playerY, cell.x, cell.y);
-        if (distanceTocell < cell._radius + SAFE_DISTANCE) {
-            const avoidAngle = Math.atan2(playerY - cell.y, playerX - cell.x);
-            angle = avoidAngle;
-        }
-    });
+    // // Избегаем других игроков
+    // otherPlayesCells.forEach(cell => {
+    //     const distanceTocell = calculateDistance(playerX, playerY, cell.x, cell.y);
+    //     if (distanceTocell < cell._radius + SAFE_DISTANCE) {
+    //         const avoidAngle = Math.atan2(playerY - cell.y, playerX - cell.x);
+    //         angle = avoidAngle;
+    //     }
+    // });
 
-    const newX = playerX + Math.cos(angle) * DISTANCE_TO_MOVE;
-    const newY = playerY + Math.sin(angle) * DISTANCE_TO_MOVE;
-    // const atan = Math.atan2(newX - globalBlob.game._viewArea.centerX, newY - globalBlob.game._viewArea.centerY);
+    // const newX = playerX + Math.cos(angle) * DISTANCE_TO_MOVE;
+    // const newY = playerY + Math.sin(angle) * DISTANCE_TO_MOVE;
+    // // const atan = Math.atan2(newX - globalBlob.game._viewArea.centerX, newY - globalBlob.game._viewArea.centerY);
+
+    // // globalBlob.game._client.buffer.writeUInt8(1);
+    // // globalBlob.game._client.buffer.writeFloat(Math.sin(atan) * 1);
+    // // globalBlob.game._client.buffer.writeFloat(Math.cos(atan) * 1);
 
     // globalBlob.game._client.buffer.writeUInt8(1);
-    // globalBlob.game._client.buffer.writeFloat(Math.sin(atan) * 1);
-    // globalBlob.game._client.buffer.writeFloat(Math.cos(atan) * 1);
+    // globalBlob.game._client.buffer.writeFloat(newX);
+    // globalBlob.game._client.buffer.writeFloat(newY);
+
+    // if (isChasing) {
+    //     globalBlob.game._client.buffer.writeUInt8(2);
+    // }
+
+    // Итоговые координаты относительно текущей точки (вектор движения)
+    let vectorX = 0;
+    let vectorY = 0;
+
+    let deltaX = targetX - playerX;
+    let deltaY = targetY - playerY;
+
+    let distance = Math.hypot(deltaX, deltaY)
+    let w = 1 / distance;
+    vectorX += (deltaX / distance) * w
+    vectorY += (deltaY / distance) * w
+
+    otherPlayesCells.forEach(cell => {
+        let dx = playerX - cell.x;
+        let dy = playerY - cell.y;
+
+        let dist = Math.hypot(dx, dy)
+        if (dist < 300) {
+            let v = (300 / dist) ** 2
+
+            vectorX += (dx / dist) * v
+            vectorY += (dy / dist) * v
+        }
+    })
+
+    // Нормализация
+    let len = Math.hypot(vectorX, vectorY)
 
     globalBlob.game._client.buffer.writeUInt8(1);
-    globalBlob.game._client.buffer.writeFloat(newX);
-    globalBlob.game._client.buffer.writeFloat(newY);
-
-    if (isChasing) {
-        globalBlob.game._client.buffer.writeUInt8(2);
-    }
+    globalBlob.game._client.buffer.writeFloat(vectorX / len);
+    globalBlob.game._client.buffer.writeFloat(vectorY / len);
 }
 
 function collectPelletsOnPath(playerX, playerY, targetX, targetY, viruses) {
