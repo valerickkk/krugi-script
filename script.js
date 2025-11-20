@@ -15238,7 +15238,7 @@ function moveCell(playerX, playerY, targetX, targetY, otherPlayesCells, isChasin
     // Избегаем других игроков
     otherPlayesCells.forEach(cell => {
         const distanceTocell = calculateDistance(playerX, playerY, cell.x, cell.y);
-        if (distanceToVirus < cell._radius + SAFE_DISTANCE) {
+        if (distanceTocell < cell._radius + SAFE_DISTANCE) {
             const avoidAngle = Math.atan2(playerY - cell.y, playerX - cell.x);
             angle = avoidAngle;
         }
