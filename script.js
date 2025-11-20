@@ -15227,7 +15227,7 @@ function isInView(cell) {
         cell.y >= viewArea.minY && cell.y <= viewArea.maxY;
 }
 
-function moveCell(playerX, playerY, targetX, targetY, viruses, isChasing = false) {
+function moveCell(playerX, playerY, targetX, targetY, otherPlayesCells, isChasing = false) {
 
     if (!playerX || !playerY || !globalBlob || !globalBlob.game || !globalBlob.game._viewArea) return;
 
@@ -15235,17 +15235,17 @@ function moveCell(playerX, playerY, targetX, targetY, viruses, isChasing = false
     const deltaY = targetY - playerY;
     let angle = Math.atan2(deltaY, deltaX);
 
-    // // Избегаем вирусов
-    // viruses.forEach(virus => {
-    //     const distanceToVirus = calculateDistance(cell.x, cell.y, virus.x, virus.y);
-    //     if (distanceToVirus < cell._radius + SAFE_DISTANCE) {
-    //         const avoidAngle = Math.atan2(cell.y - virus.y, cell.x - virus.x);
-    //         angle = avoidAngle;
-    //     }
-    // });
+    // Избегаем вирусов
+    otherPlayesCells.forEach(cell => {
+        const distanceToVirus = calculateDistance(cell.x, cell.y, virus.x, virus.y);
+        if (distanceToVirus < cell._radius + SAFE_DISTANCE) {
+            const avoidAngle = Math.atan2(cell.y - virus.y, cell.x - virus.x);
+            angle = avoidAngle;
+        }
+    });
 
-    // const newX = playerX + Math.cos(angle) * DISTANCE_TO_MOVE;
-    // const newY = playerY + Math.sin(angle) * DISTANCE_TO_MOVE;
+    const newX = playerX + Math.cos(angle) * DISTANCE_TO_MOVE;
+    const newY = playerY + Math.sin(angle) * DISTANCE_TO_MOVE;
     // const atan = Math.atan2(newX - globalBlob.game._viewArea.centerX, newY - globalBlob.game._viewArea.centerY);
 
     // globalBlob.game._client.buffer.writeUInt8(1);
@@ -15253,8 +15253,8 @@ function moveCell(playerX, playerY, targetX, targetY, viruses, isChasing = false
     // globalBlob.game._client.buffer.writeFloat(Math.cos(atan) * 1);
 
     globalBlob.game._client.buffer.writeUInt8(1);
-    globalBlob.game._client.buffer.writeFloat(deltaX);
-    globalBlob.game._client.buffer.writeFloat(deltaY);
+    globalBlob.game._client.buffer.writeFloat(newX);
+    globalBlob.game._client.buffer.writeFloat(newY);
 
     if (isChasing) {
         globalBlob.game._client.buffer.writeUInt8(2);
@@ -15357,6 +15357,13 @@ function MPC() {
         isChasing = true;
     }
 
+    const otherPlayesCells = []
+    globalBlob.game.cellMgr._updatedCells.forEach(cell => {
+        if (cell.type === 0 && isInView(cell)) {
+            otherPlayesCells .push(cell);
+        }
+    });
+
     if (target && isChasing) {
         let minDistance = calculateDistance(localCells[0].x, localCells[0].x, target.x, target.y)
         let closestCell = localCells[0]
@@ -15365,10 +15372,10 @@ function MPC() {
                 closestCell = cell;
             }
         })
-        moveCell(closestCell.x, closestCell.y, target.x, target.y, viruses, isChasing);
+        moveCell(closestCell.x, closestCell.y, target.x, target.y, otherPlayesCells, isChasing);
     } else {
         // метод сбора пеллетов, 2 и 3 аргументы это рандомные координаты на случай если не будет пеллетов по близости
-        collectPelletsOnPath(localCells[0].x, localCells[0].y, localCells[0].x + Math.random() * 1000 - 500, localCells[0].y + Math.random() * 1000 - 500, viruses);
+        collectPelletsOnPath(localCells[0].x, localCells[0].y, localCells[0].x + Math.random() * 1000 - 500, localCells[0].y + Math.random() * 1000 - 500, otherPlayesCells);
     }
 
     sendInputBlock = true;
