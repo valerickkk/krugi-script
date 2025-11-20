@@ -15316,9 +15316,9 @@ function updateViruses(localCells) {
 function MPC() {
     if (!globalBlob || !globalBlob.game || !globalBlob.game._localPlayerCells || !globalBlob.game.cellMgr || !globalBlob.game._client) return;
 
-    if (!globalBlob.alive) {
-        globalBlob.game.respawn();
-    }
+    // if (!globalBlob.alive) {
+    //     globalBlob.game.respawn();
+    // }
 
     const localCells = globalBlob.game._localPlayerCells;
     const totalMass = getTotalMass(localCells);
