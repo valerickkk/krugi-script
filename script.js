@@ -15353,12 +15353,14 @@ function MPC() {
         isChasing = true;
     }
 
-    if (target && isChasing) {
-        moveCell(playerCanterX, playerCanterY, target.x, target.y, viruses, isChasing);
-    } else {
-        // метод сбора пеллетов, 2 и 3 аргументы это рандомные координаты на случай если не будет пеллетов по близости
-        collectPelletsOnPath(localCells[0].x, localCells[0].y, playerCanterX + Math.random() * 1000 - 500, playerCanterY + Math.random() * 1000 - 500, viruses);
-    }
+    localCells.forEach(cell => {
+        if (target && isChasing) {
+            moveCell(cell.x, cell.y, target.x, target.y, viruses, isChasing);
+        } else {
+            // метод сбора пеллетов, 2 и 3 аргументы это рандомные координаты на случай если не будет пеллетов по близости
+            collectPelletsOnPath(cell.x, cell.y, cell.x + Math.random() * 1000 - 500, cell.y + Math.random() * 1000 - 500, viruses);
+        }
+    })
 
     sendInputBlock = true;
 }
