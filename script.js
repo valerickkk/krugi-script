@@ -15233,6 +15233,7 @@ function moveCell(playerX, playerY, targetX, targetY, otherPlayesCells, isChasin
 
     const deltaX = targetX - playerX;
     const deltaY = targetY - playerY;
+    DISTANCE_TO_MOVE = calculateDistance(playerX, playerY, targetX, targetY)
     let angle = Math.atan2(deltaY, deltaX);
 
     // Избегаем других игроков
@@ -15252,8 +15253,8 @@ function moveCell(playerX, playerY, targetX, targetY, otherPlayesCells, isChasin
     console.log("Y: " + playerY + " -> " + deltaY + " -> " + newY + " -> " + atan + " -> " + Math.cos(atan) * 1)
 
     globalBlob.game._client.buffer.writeUInt8(1);
-    globalBlob.game._client.buffer.writeFloat(Math.sin(atan) * 1);
-    globalBlob.game._client.buffer.writeFloat(Math.cos(atan) * 1);
+    globalBlob.game._client.buffer.writeFloat(Math.sin(atan) * 99999);
+    globalBlob.game._client.buffer.writeFloat(Math.cos(atan) * 99999);
 
     // globalBlob.game._client.buffer.writeUInt8(1);
     // globalBlob.game._client.buffer.writeFloat(newX);
