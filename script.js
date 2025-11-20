@@ -15403,6 +15403,8 @@ function MPC() {
         }
     });
 
+    console.log(otherPlayesCells)
+
     if (target && isChasing) {
         let minDistance = calculateDistance(localCells[0].x, localCells[0].x, target.x, target.y)
         let closestCell = localCells[0]
