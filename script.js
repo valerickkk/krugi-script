@@ -15244,13 +15244,17 @@ function moveCell(playerX, playerY, targetX, targetY, viruses, isChasing = false
     //     }
     // });
 
-    const newX = playerX + Math.cos(angle) * DISTANCE_TO_MOVE;
-    const newY = playerY + Math.sin(angle) * DISTANCE_TO_MOVE;
-    const atan = Math.atan2(newX - globalBlob.game._viewArea.centerX, newY - globalBlob.game._viewArea.centerY);
+    // const newX = playerX + Math.cos(angle) * DISTANCE_TO_MOVE;
+    // const newY = playerY + Math.sin(angle) * DISTANCE_TO_MOVE;
+    // const atan = Math.atan2(newX - globalBlob.game._viewArea.centerX, newY - globalBlob.game._viewArea.centerY);
+
+    // globalBlob.game._client.buffer.writeUInt8(1);
+    // globalBlob.game._client.buffer.writeFloat(Math.sin(atan) * 1);
+    // globalBlob.game._client.buffer.writeFloat(Math.cos(atan) * 1);
 
     globalBlob.game._client.buffer.writeUInt8(1);
-    globalBlob.game._client.buffer.writeFloat(Math.sin(atan) * 1);
-    globalBlob.game._client.buffer.writeFloat(Math.cos(atan) * 1);
+    globalBlob.game._client.buffer.writeFloat(deltaX);
+    globalBlob.game._client.buffer.writeFloat(deltaY);
 
     if (isChasing) {
         globalBlob.game._client.buffer.writeUInt8(2);
