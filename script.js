@@ -15249,8 +15249,8 @@ function moveCell(playerX, playerY, targetX, targetY, viruses, isChasing = false
     const atan = Math.atan2(newX - globalBlob.game._viewArea.centerX, newY - globalBlob.game._viewArea.centerY);
 
     globalBlob.game._client.buffer.writeUInt8(1);
-    globalBlob.game._client.buffer.writeFloat(Math.sin(atan) * 9999999999);
-    globalBlob.game._client.buffer.writeFloat(Math.cos(atan) * 9999999999);
+    globalBlob.game._client.buffer.writeFloat(Math.sin(atan) * 1);
+    globalBlob.game._client.buffer.writeFloat(Math.cos(atan) * 1);
 
     if (isChasing) {
         globalBlob.game._client.buffer.writeUInt8(2);
