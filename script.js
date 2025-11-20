@@ -15318,6 +15318,7 @@ function MPC() {
 
     if (!globalBlob.alive) {
         globalBlob.game.respawn();
+        console.log("DEAD")
     }
 
     const localCells = globalBlob.game._localPlayerCells;
@@ -15347,7 +15348,7 @@ function MPC() {
         moveCell(playerCanterX, playerCanterY, target.x, target.y, viruses, true);
     } else {
         // метод сбора пеллетов, 2 и 3 аргументы это рандомные координаты на случай если не будет пеллетов по близости
-        collectPelletsOnPath(playerCanterX, playerCanterY, playerCanterX + Math.random() * 1000 - 500, playerCanterY + Math.random() * 1000 - 500, viruses);
+        collectPelletsOnPath(localCells[0].x, localCells[0].y, playerCanterX + Math.random() * 1000 - 500, playerCanterY + Math.random() * 1000 - 500, viruses);
     }
 
     sendInputBlock = true;
