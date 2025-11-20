@@ -15288,6 +15288,8 @@ function moveCell(playerX, playerY, targetX, targetY, otherPlayesCells, isChasin
     // Нормализация
     let len = Math.hypot(vectorX, vectorY)
 
+    console.log(vectorX, vectorY)
+
     globalBlob.game._client.buffer.writeUInt8(1);
     globalBlob.game._client.buffer.writeFloat(vectorX / len);
     globalBlob.game._client.buffer.writeFloat(vectorY / len);
@@ -15367,9 +15369,6 @@ function MPC() {
     const playerCanterX = localCells.reduce((acc, cell) => acc + cell.x, 0) / localCells.length
     const playerCanterY = localCells.reduce((acc, cell) => acc + cell.y, 0) / localCells.length
 
-    console.log(localCells.length);
-    console.log(localCells.reduce((acc, cell) => acc + cell.x, 0))
-
     const viruses = updateViruses(localCells);
     let targetCell = null;
     let targetCellDistance = Infinity;
@@ -15434,7 +15433,6 @@ function toggleBotMode() {
         startTime = Date.now();
         intervalId = setInterval(MPC, MPC_INTERVAL);
         notMergeFrameId = requestAnimationFrame(notMerge);
-        console.log(globalBlob)
     } else {
         botModeEnabled = false;
         clearInterval(intervalId);
