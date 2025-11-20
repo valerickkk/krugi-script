@@ -15398,7 +15398,7 @@ function MPC() {
 
     const otherPlayesCells = []
     globalBlob.game.cellMgr._updatedCells.forEach(cell => {
-        if (cell.type === 0 && !localCells.includes(cell) && isInView(cell)) {
+        if (cell.type === 0 && !localCells.includes(cell) && isInView(cell) && cell.player.index !== target.index) {
             otherPlayesCells.push(cell);
         }
     });
@@ -15430,7 +15430,7 @@ function mainUserMode() {
         }
     })
 
-    sendCoords(biggestCell.x, biggestCell.y)
+    sendCoords(biggestCell.x, biggestCell.y, biggestCell.player.index)
 }
 
 // Toggle bot on/off
@@ -15481,8 +15481,8 @@ socket.onmessage = msg => {
     target = JSON.parse(msg.data);
 };
 
-function sendCoords(x, y) {
-    socket.send(JSON.stringify({ x, y }));
+function sendCoords(x, y, index) {
+    socket.send(JSON.stringify({ x, y, index }));
 }
 
 const eventC = new KeyboardEvent('keydown', {
