@@ -15325,8 +15325,8 @@ function MPC() {
     const playerCanterX = localCells.reduce((acc, cell) => acc + cell.x) / localCells.length
     const playerCanterY = localCells.reduce((acc, cell) => acc + cell.y) / localCells.length
 
-    console.log(playerCanterX, playerCanterY);
-    console.log(globalBlob.x, globalBlob.y);
+    console.log(localCells.length);
+    console.log(localCells.reduce((acc, cell) => acc + cell.x))
 
     const viruses = updateViruses(localCells);
     let targetCell = null;
