@@ -15395,8 +15395,8 @@ function MPC() {
 
     const otherPlayesCells = []
     globalBlob.game.cellMgr._updatedCells.forEach(cell => {
-        if (cell.type === 0 && isInView(cell)) {
-            otherPlayesCells .push(cell);
+        if (cell.type === 0 && !localCells.includes(cell) && isInView(cell)) {
+            otherPlayesCells.push(cell);
         }
     });
 
