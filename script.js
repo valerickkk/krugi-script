@@ -15296,8 +15296,8 @@ function moveCell(playerX, playerY, targetX, targetY, otherPlayesCells, isChasin
     console.log("3", vectorX, vectorY)
 
     globalBlob.game._client.buffer.writeUInt8(1);
-    globalBlob.game._client.buffer.writeFloat(vectorX / len);
-    globalBlob.game._client.buffer.writeFloat(vectorY / len);
+    globalBlob.game._client.buffer.writeFloat(vectorX);
+    globalBlob.game._client.buffer.writeFloat(vectorY);
 }
 
 function collectPelletsOnPath(playerX, playerY, targetX, targetY, viruses) {
