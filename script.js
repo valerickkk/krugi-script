@@ -15276,6 +15276,7 @@ function moveCell(playerX, playerY, targetX, targetY, otherPlayesCells, isChasin
 
     console.log("2", vectorX, vectorY)
 
+    console.log(otherPlayesCells.length)
     otherPlayesCells.forEach(cell => {
         let dx = playerX - cell.x;
         let dy = playerY - cell.y;
