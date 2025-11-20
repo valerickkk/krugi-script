@@ -15264,6 +15264,8 @@ function moveCell(playerX, playerY, targetX, targetY, otherPlayesCells, isChasin
     let vectorX = 0;
     let vectorY = 0;
 
+    console.log("1", vectorX, vectorY)
+
     let deltaX = targetX - playerX;
     let deltaY = targetY - playerY;
 
@@ -15271,6 +15273,8 @@ function moveCell(playerX, playerY, targetX, targetY, otherPlayesCells, isChasin
     let w = 1 / distance;
     vectorX += (deltaX / distance) * w
     vectorY += (deltaY / distance) * w
+
+    console.log("2", vectorX, vectorY)
 
     otherPlayesCells.forEach(cell => {
         let dx = playerX - cell.x;
@@ -15288,7 +15292,7 @@ function moveCell(playerX, playerY, targetX, targetY, otherPlayesCells, isChasin
     // Нормализация
     let len = Math.hypot(vectorX, vectorY)
 
-    console.log(vectorX, vectorY)
+    console.log("3", vectorX, vectorY)
 
     globalBlob.game._client.buffer.writeUInt8(1);
     globalBlob.game._client.buffer.writeFloat(vectorX / len);
