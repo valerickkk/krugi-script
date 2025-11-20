@@ -15318,7 +15318,6 @@ function MPC() {
 
     if (!globalBlob.alive) {
         globalBlob.game.respawn();
-        console.log("DEAD")
     }
 
     const localCells = globalBlob.game._localPlayerCells;
@@ -15375,6 +15374,7 @@ function toggleBotMode() {
         startTime = Date.now();
         intervalId = setInterval(MPC, MPC_INTERVAL);
         notMergeFrameId = requestAnimationFrame(notMerge);
+        console.log(globalBlob)
     } else {
         botModeEnabled = false;
         clearInterval(intervalId);
