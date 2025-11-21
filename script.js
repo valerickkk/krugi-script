@@ -12624,7 +12624,7 @@ const htmlContent = `
 </style>
 
 <style>
-.top-container1[data-v-53e414ae] {
+.top-container[data-v-53e414ae] {
     background: none !important;
     width: 300px !important;
     height: 313.6px !important;
@@ -12637,7 +12637,7 @@ const htmlContent = `
     transition: opacity .5s !important;
 }
 
-.top-container1.transparent[data-v-53e414ae] {
+.top-container.transparent[data-v-53e414ae] {
     opacity: .2 !important;
 }
 
@@ -12781,10 +12781,6 @@ const htmlContent = `
 }
 
 .button-exit[data-v-53e414ae] {
-    display: none !important;
-}
-
-.sprite-icon-fullscreen {
     display: none !important;
 }
 
