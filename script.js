@@ -12624,7 +12624,7 @@ const htmlContent = `
 </style>
 
 <style>
-.top-container[data-v-53e414ae] {
+.top-container1[data-v-53e414ae] {
     background: none !important;
     width: 300px !important;
     height: 313.6px !important;
@@ -12637,7 +12637,7 @@ const htmlContent = `
     transition: opacity .5s !important;
 }
 
-.top-container.transparent[data-v-53e414ae] {
+.top-container1.transparent[data-v-53e414ae] {
     opacity: .2 !important;
 }
 
@@ -15227,13 +15227,18 @@ function isInView(cell) {
         cell.y >= viewArea.minY && cell.y <= viewArea.maxY;
 }
 
-function moveCell(playerX, playerY, targetX, targetY, otherPlayesCells, isChasing = false) {
+// Основная функция движения бота
+function moveBot(playerX, playerY, targetX, targetY, otherPlayesCells, isChasing = false) {
 
     if (!playerX || !playerY || !globalBlob || !globalBlob.game || !globalBlob.game._viewArea) return;
 
+    // Дельты координат между игроком и целью
     const deltaX = targetX - playerX;
     const deltaY = targetY - playerY;
+
     DISTANCE_TO_MOVE = calculateDistance(playerX, playerY, targetX, targetY)
+
+    // Угол направления движения игрока в сторону цели
     let angle = Math.atan2(deltaY, deltaX);
 
     // Избегаем других игроков
@@ -15245,65 +15250,26 @@ function moveCell(playerX, playerY, targetX, targetY, otherPlayesCells, isChasin
         }
     });
 
+    // это промежуточные координаты на пути к цели
+    // они необходимы, т.к. нужна возможность уклоняться от прямого пути к конечной цели, чтоб обойти вражеские клетки
+    // другими словами newX и newY - это координаты курсора, если бы мы вручную управляли ботом
     const newX = playerX + Math.cos(angle) * DISTANCE_TO_MOVE;
     const newY = playerY + Math.sin(angle) * DISTANCE_TO_MOVE;
     const atan = Math.atan2(newX - globalBlob.game._viewArea.centerX, newY - globalBlob.game._viewArea.centerY);
 
-    console.log("X: " + playerX + " -> " + deltaX + " -> " + newX + " -> " + atan + " -> " + Math.sin(atan) * 1)
-    console.log("Y: " + playerY + " -> " + deltaY + " -> " + newY + " -> " + atan + " -> " + Math.cos(atan) * 1)
-
+    // Серверу передаем дельты координат между текущим положением и промежуточной точкой
+    // в данном примере дельты вычисляются путем умножения синуса и косинуса на дистанцию (гипотенузу), но можно и просто путем x2 - x1, y2 - y1
     globalBlob.game._client.buffer.writeUInt8(1);
     globalBlob.game._client.buffer.writeFloat(Math.sin(atan) * DISTANCE_TO_MOVE);
     globalBlob.game._client.buffer.writeFloat(Math.cos(atan) * DISTANCE_TO_MOVE);
 
-    // globalBlob.game._client.buffer.writeUInt8(1);
-    // globalBlob.game._client.buffer.writeFloat(newX);
-    // globalBlob.game._client.buffer.writeFloat(newY);
-
     if (isChasing) {
         globalBlob.game._client.buffer.writeUInt8(2);
     }
-
-    // Итоговые координаты относительно текущей точки (вектор движения)
-    // let vectorX = 0;
-    // let vectorY = 0;
-
-    // console.log("1", vectorX, vectorY)
-
-    // let deltaX = targetX - playerX;
-    // let deltaY = targetY - playerY;
-
-    // let distance = Math.hypot(deltaX, deltaY)
-    // vectorX += (deltaX / distance) * w
-    // vectorY += (deltaY / distance) * w
-
-    // console.log("2", vectorX, vectorY)
-
-    // console.log(otherPlayesCells.length)
-    // otherPlayesCells.forEach(cell => {
-    //     let dx = playerX - cell.x;
-    //     let dy = playerY - cell.y;
-
-    //     let dist = Math.hypot(dx, dy)
-    //     if (dist < 300) {
-    //         let v = (300 / dist) ** 2
-
-    //         vectorX += (dx / dist) * v
-    //         vectorY += (dy / dist) * v
-    //     }
-    // })
-
-    // // Нормализация
-    // let len = Math.hypot(vectorX, vectorY)
-
-    // console.log("3", vectorX, vectorY)
-
-    // globalBlob.game._client.buffer.writeUInt8(1);
-    // globalBlob.game._client.buffer.writeFloat(vectorX);
-    // globalBlob.game._client.buffer.writeFloat(vectorY);
 }
 
-function collectPelletsOnPath(playerX, playerY, targetX, targetY, viruses) {
+// Функция поедания пеллетов (набор массы)
+function collectPelletsOnPath(playerX, playerY, targetX, targetY, enemies) {
     let closestPellet = null;
     let closestPelletDistance = Infinity;
 
@@ -15313,7 +15279,7 @@ function collectPelletsOnPath(playerX, playerY, targetX, targetY, viruses) {
     notNullPellet.forEach(pellet => {
         const distance = calculateDistance(playerX, playerY, pellet.x, pellet.y);
 
-        const isPelletSafe = viruses.every(virus => calculateDistance(pellet.x, pellet.y, virus.x, virus.y) > SAFE_DISTANCE);
+        const isPelletSafe = enemies.every(enemy => calculateDistance(pellet.x, pellet.y, enemy.x, enemy.y) > SAFE_DISTANCE + enemy._radius);
 
         if (distance < closestPelletDistance && isPelletSafe) {
             closestPelletDistance = distance;
@@ -15322,9 +15288,9 @@ function collectPelletsOnPath(playerX, playerY, targetX, targetY, viruses) {
     });
 
     if (closestPellet) {
-        moveCell(playerX, playerY, closestPellet.x, closestPellet.y, viruses);
+        moveBot(playerX, playerY, closestPellet.x, closestPellet.y, enemies);
     } else {
-        moveCell(playerX, playerY, targetX, targetY, viruses);
+        moveBot(playerX, playerY, targetX, targetY, enemies);
     }
 }
 
@@ -15392,6 +15358,7 @@ function MPC() {
         }
     });
 
+    // Признак "Начинать ли преследование главного игрока"
     if (totalMass > 200 && !isChasing) {
         isChasing = true;
     }
@@ -15413,10 +15380,14 @@ function MPC() {
                 closestCell = cell;
             }
         })
-        moveCell(closestCell.x, closestCell.y, target.x, target.y, otherPlayesCells, isChasing);
+        moveBot(closestCell.x, closestCell.y, target.x, target.y, otherPlayesCells, isChasing);
     } else {
         // метод сбора пеллетов, 2 и 3 аргументы это рандомные координаты на случай если не будет пеллетов по близости
-        collectPelletsOnPath(localCells[0].x, localCells[0].y, localCells[0].x + Math.random() * 1000 - 500, localCells[0].y + Math.random() * 1000 - 500, otherPlayesCells);
+        collectPelletsOnPath(localCells[0].x,
+            localCells[0].y,
+            localCells[0].x + Math.random() * 1000 - 500,
+            localCells[0].y + Math.random() * 1000 - 500,
+            otherPlayesCells);
     }
 
     sendInputBlock = true;
