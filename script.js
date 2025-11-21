@@ -12776,10 +12776,6 @@ const htmlContent = `
     display: none !important;
 }
 
-.buttons-container[data-v-53e414ae] {
-    display: none !important;
-}
-
 .button-exit[data-v-53e414ae] {
     display: none !important;
 }
