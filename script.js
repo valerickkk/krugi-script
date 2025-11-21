@@ -15386,6 +15386,12 @@ function MPC() {
 }
 
 function mainUserMode() {
+
+    // localCells.length === 0 - это признак того, что бот умер
+    if (globalBlob.game._localPlayerCells.length === 0) {
+        return;
+    }
+
     let biggestCell = globalBlob.game._localPlayerCells[0]
     globalBlob.game._localPlayerCells.forEach(cell => {
         if (cell.mass > biggestCell.mass) {
